@@ -128,7 +128,7 @@ class DistanceCalculator {
     return bcmul($distance, $ratingFactor);
   }
 
-    public function process() {
+    public function process($edgeLimit = 150) {
     $handle = fopen('dump.sql', 'w+');
     $ids = array_keys($this->movies);
     $counter = 1;
@@ -144,7 +144,9 @@ class DistanceCalculator {
 //        $distance = $this->euclidDistance($this->fillGenres($movieOuter[GENRES]), $this->fillGenres($movieInner[GENRES]));
 //          $distance = $this->calculateDistanceRating($movieOuter, $movieInner);
         $distance = $this->calculateDistanceCustom($movieOuter, $movieInner);
-        fwrite($handle, "($i, $j, $distance)");
+//        if(bccomp($distance, $edgeLimit) <= 0) {
+          fwrite($handle, "($i, $j, $distance)");
+//        }
         if ($j == $last){
           fwrite($handle, ";\nCOMMIT;\n");
         } else {
